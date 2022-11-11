@@ -1,0 +1,81 @@
+{
+   "items": [
+      {
+         "id": "GGOEAFKA087499",
+         "name": "iphone 11 apple (64gb) preto tela 6,1 4g câmera 12mp ios",
+         "price": "3689.00",
+         "category": "apple",
+         "subcategory": "iphone 11"
+      },
+      {
+         "id": "GGOEAFKA087599",
+         "name": "iphone 12 apple 64gb ios 5g wi-fi tela 6.1 câmera 12mp - preto",
+         "price": "4669.00",
+         "category": "apple",
+         "subcategory": "iphone 12"
+      },
+      {
+         "id": "GGOEGEBK094499",
+         "name": "iphone 12 apple 64gb ios 5g wi-fi tela 6.1 câmera 12mp - azul",
+         "price": "4919.00",
+         "category": "apple",
+         "subcategory": "iphone 12"
+      },
+      {
+         "id": "GGOEGFKA086699",
+         "name": "iphone 12 apple 256gb ios 5g wi-fi tela 6.1 câmera 12mp - (product) red",
+         "price": "5399.00",
+         "category": "apple",
+         "subcategory": "iphone 12"
+      },
+      {
+         "id": "GGOEWCKQ085457",
+         "name": "iphone 11 apple (128gb) branco tela 6,1 câmera 12mp ios",
+         "price": "4119.00",
+         "category": "apple",
+         "subcategory": "iphone 11"
+      },
+      {
+         "id": "GGOEGHPB071610",
+         "name": "iphone 12 apple 64gb ios 5g wi-fi tela 6.1 câmera 12mp - verde",
+         "price": "4129.00",
+         "category": "apple",
+         "subcategory": "iphone 12"
+      },
+      {
+         "id": "GGOEGHPJ094299",
+         "name": "iphone 12 apple 128gb ios 5g wi-fi tela 6.1 câmera 12mp - branco",
+         "price": "4719.00",
+         "category": "apple",
+         "subcategory": "iphone 12"
+      },
+      {
+         "id": "GGOEGHPJ094399",
+         "name": "carregador usb-c de 20w - apple",
+         "price": "188.00",
+         "category": "apple",
+         "subcategory": "carregador usb-c"
+      },
+      {
+         "id": "GGOEWXXX0827",
+         "name": "apple airpods com estojo de recarga magsafe",
+         "price": "1684.89",
+         "category": "apple",
+         "subcategory": "airpods"
+      },
+      {
+         "id": "GGOEWXXX0828",
+         "name": "apple watch series 7 gps 41mm caixa (product)red de alumínio pulseira esportiva (product)red",
+         "price": "3889.00",
+         "category": "apple",
+         "subcategory": "watch series 7"
+      },
+      {
+         "id": "GGOEGBRJ037399",
+         "name": "apple watch se gps, 44mm caixa dourada de alumínio pulseira esportiva estelar",
+         "price": "1839.00",
+         "category": "apple",
+         "subcategory": "watch se"
+      }
+   ]
+}
