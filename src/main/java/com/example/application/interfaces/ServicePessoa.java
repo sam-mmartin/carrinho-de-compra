@@ -10,5 +10,7 @@ public interface ServicePessoa<T, V> {
 
    public List<T> getAll();
 
+   public void remove(T pessoa);
+
    public void seed();
 }

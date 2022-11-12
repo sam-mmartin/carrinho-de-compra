@@ -57,7 +57,7 @@ public class ServiceProduto implements IServiceProduto {
 
       try {
          jsonObject = (JSONObject) parser.parse(new FileReader(
-               "carrinho-de-compra/src/products.json"));
+               "src/products.json"));
 
          JSONArray jsonArray = (JSONArray) jsonObject.get("items");
 

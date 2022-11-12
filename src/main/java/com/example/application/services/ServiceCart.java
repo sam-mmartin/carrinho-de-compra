@@ -6,7 +6,6 @@ import com.example.application.interfaces.IServiceCart;
 import com.example.application.interfaces.IServiceFrete;
 import com.example.models.loja.ItemPedido;
 import com.example.models.loja.interfaces.Carrinho;
-import com.example.models.pessoa.Pessoa;
 
 public class ServiceCart implements IServiceCart {
 
@@ -17,10 +16,6 @@ public class ServiceCart implements IServiceCart {
    public ServiceCart(Carrinho carrinho, IServiceFrete correios) {
       this.carrinho = carrinho;
       this.correios = correios;
-   }
-
-   public Pessoa getCliente() {
-      return carrinho.getCliente();
    }
 
    public void addItem(ItemPedido item) {

@@ -4,7 +4,6 @@ import com.example.models.VOs.CNPJ;
 import com.example.models.VOs.CPF;
 import com.example.models.frete.interfaces.RepositorioFrete;
 import com.example.models.loja.interfaces.Carrinho;
-import com.example.models.pessoa.Pessoa;
 import com.example.models.pessoa.PessoaFisica;
 import com.example.models.pessoa.PessoaJuridica;
 import com.example.models.pessoa.interfaces.RepositorioPessoa;
@@ -20,6 +19,6 @@ public interface RepositoryInjector {
 
    public RepositorioFrete getRepositorioFrete();
 
-   public Carrinho getRepositorioPedido(Pessoa cliente);
+   public Carrinho getRepositorioPedido();
 
 }

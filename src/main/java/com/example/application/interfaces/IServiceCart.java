@@ -3,11 +3,8 @@ package com.example.application.interfaces;
 import java.math.BigDecimal;
 
 import com.example.models.loja.ItemPedido;
-import com.example.models.pessoa.Pessoa;
 
 public interface IServiceCart {
-
-   public Pessoa getCliente();
 
    public void addItem(ItemPedido item);
 

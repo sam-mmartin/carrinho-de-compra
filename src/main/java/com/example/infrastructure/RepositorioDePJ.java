@@ -29,4 +29,9 @@ public class RepositorioDePJ implements RepositorioPessoa<PessoaJuridica, CNPJ> 
    public List<PessoaJuridica> listarTodos() {
       return this.pessoas;
    }
+
+   @Override
+   public void remover(PessoaJuridica pessoa) {
+      this.pessoas.remove(pessoa);
+   }
 }

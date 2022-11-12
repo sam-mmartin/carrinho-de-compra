@@ -6,8 +6,10 @@ public interface RepositorioPessoa<T, V> {
 
    public T buscarPorId(V id);
 
-   public void cadastrar(T objeto);
+   public void cadastrar(T pessoa);
 
    public List<T> listarTodos();
+
+   public void remover(T pessoa);
 
 }

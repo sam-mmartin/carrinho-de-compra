@@ -2,10 +2,8 @@ package com.example.application.resources;
 
 import java.math.BigDecimal;
 
-import com.example.application.Loja;
 import com.example.application.dto.pessoa.DTOCadastrarPF;
 import com.example.application.dto.pessoa.DTOCadastrarPJ;
-import com.example.application.interfaces.ILoja;
 import com.example.application.interfaces.IServiceCart;
 import com.example.application.interfaces.IServiceFrete;
 import com.example.application.interfaces.IServiceProduto;
@@ -17,7 +15,6 @@ import com.example.application.services.ServiceFrete;
 import com.example.application.services.ServicePF;
 import com.example.application.services.ServicePJ;
 import com.example.application.services.ServiceProduto;
-import com.example.models.EventPublisher;
 import com.example.models.VOs.CNPJ;
 import com.example.models.VOs.CPF;
 import com.example.models.frete.interfaces.RepositorioFrete;
@@ -30,9 +27,8 @@ import com.example.models.produto.interfaces.RepositorioProduto;
 public class ServiceDependencyInjector implements ServiceInjector {
 
    @Override
-   public ServicePessoa<PessoaFisica, DTOCadastrarPF> getServicePF(RepositorioPessoa<PessoaFisica, CPF> pessoas,
-         EventPublisher publicador) {
-      return new ServicePF(pessoas, publicador);
+   public ServicePessoa<PessoaFisica, DTOCadastrarPF> getServicePF(RepositorioPessoa<PessoaFisica, CPF> pessoas) {
+      return new ServicePF(pessoas);
    }
 
    @Override
@@ -54,11 +50,6 @@ public class ServiceDependencyInjector implements ServiceInjector {
    @Override
    public IServiceCart getServiceCart(Carrinho carrinho, IServiceFrete correios) {
       return new ServiceCart(carrinho, correios);
-   }
-
-   @Override
-   public ILoja getLoja(IServiceProduto serviceProduto, Page paginaProdutos, IServiceCart carrinho) {
-      return new Loja(serviceProduto, paginaProdutos, carrinho);
    }
 
    @Override

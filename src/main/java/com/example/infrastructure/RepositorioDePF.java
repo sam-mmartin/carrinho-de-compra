@@ -29,4 +29,9 @@ public class RepositorioDePF implements RepositorioPessoa<PessoaFisica, CPF> {
             .findFirst()
             .orElseThrow(() -> new PFNaoEncontrada(cpf));
    }
+
+   @Override
+   public void remover(PessoaFisica pessoa) {
+      this.pessoas.remove(pessoa);
+   }
 }

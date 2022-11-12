@@ -44,4 +44,9 @@ public class ServicePJ implements ServicePessoa<PessoaJuridica, DTOCadastrarPJ> 
       executa(new DTOCadastrarPJ(cnpj, nomeFantasia, razaoSocial, emailPJ, dataCriacao));
    }
 
+   @Override
+   public void remove(PessoaJuridica pessoa) {
+      repositorio.remover(pessoa);
+   }
+
 }
