@@ -1,6 +1,5 @@
 package com.example.application;
 
-import com.example.application.interfaces.ILoja;
 import com.example.application.interfaces.DI.AppInjector;
 import com.example.application.interfaces.DI.InjectorInterface;
 import com.example.application.resources.ApplicationInjector;
@@ -11,7 +10,7 @@ public class App {
 
             InjectorInterface injector = new Injector();
             AppInjector appInjector = new ApplicationInjector();
-            ILoja loja = appInjector.getLoja(injector.getRepositoryInjector(), injector.getServiceInjector());
+            Loja loja = appInjector.getLoja(injector.getRepositoryInjector(), injector.getServiceInjector());
 
             loja.run();
       }

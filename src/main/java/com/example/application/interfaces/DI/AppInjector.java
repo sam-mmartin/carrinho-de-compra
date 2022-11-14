@@ -1,12 +1,12 @@
 package com.example.application.interfaces.DI;
 
-import com.example.application.interfaces.IAccount;
-import com.example.application.interfaces.ILoja;
-import com.example.application.interfaces.IServicePedido;
+import com.example.application.Account;
+import com.example.application.Loja;
+import com.example.application.services.ServicePedido;
 
 public interface AppInjector {
 
-   public ILoja getLoja(RepositoryInjector repositories, ServiceInjector services);
+   public Loja getLoja(RepositoryInjector repositories, ServiceInjector services);
 
-   public IAccount getAccount(RepositoryInjector repositories, ServiceInjector services, IServicePedido servicePedido);
+   public Account getAccount(RepositoryInjector repositories, ServiceInjector services, ServicePedido servicePedido);
 }

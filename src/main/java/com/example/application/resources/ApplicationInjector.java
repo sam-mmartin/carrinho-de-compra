@@ -6,17 +6,14 @@ import com.example.application.Account;
 import com.example.application.Loja;
 import com.example.application.dto.pessoa.DTOCadastrarPF;
 import com.example.application.dto.pessoa.DTOCadastrarPJ;
-import com.example.application.interfaces.IAccount;
-import com.example.application.interfaces.ILoja;
-import com.example.application.interfaces.IServiceCart;
-import com.example.application.interfaces.IServiceFrete;
-import com.example.application.interfaces.IServicePedido;
-import com.example.application.interfaces.IServiceProduto;
-import com.example.application.interfaces.Page;
 import com.example.application.interfaces.ServicePessoa;
 import com.example.application.interfaces.DI.AppInjector;
 import com.example.application.interfaces.DI.RepositoryInjector;
 import com.example.application.interfaces.DI.ServiceInjector;
+import com.example.application.services.ServiceCart;
+import com.example.application.services.ServiceFrete;
+import com.example.application.services.ServicePedido;
+import com.example.application.services.ServiceProduto;
 import com.example.models.VOs.CNPJ;
 import com.example.models.VOs.CPF;
 import com.example.models.frete.interfaces.RepositorioFrete;
@@ -30,19 +27,19 @@ import com.example.models.produto.interfaces.RepositorioProduto;
 public class ApplicationInjector implements AppInjector {
 
    @Override
-   public ILoja getLoja(RepositoryInjector repositories, ServiceInjector services) {
+   public Loja getLoja(RepositoryInjector repositories, ServiceInjector services) {
 
       RepositorioProduto produtos = repositories.getRepositorioProduto();
       RepositorioFrete fretes = repositories.getRepositorioFrete();
       RepositorioPedido pedidos = repositories.getRepositorioPedido();
       Carrinho carrinho = repositories.getCarrinho();
 
-      IServiceFrete correios = services.getIserviceFrete(fretes, new BigDecimal("0.4"));
-      IServiceProduto serviceProduto = services.getServiceProduto(produtos, correios);
-      IServiceCart serviceCart = services.getServiceCart(carrinho, correios);
-      Page paginaProdutos = services.getPageProdutos(serviceProduto);
-      IServicePedido servicePedido = services.getServicePedido(pedidos);
-      IAccount serviceLogin = getAccount(repositories, services, servicePedido);
+      ServiceFrete correios = services.getIserviceFrete(fretes, new BigDecimal("0.4"));
+      ServiceProduto serviceProduto = services.getServiceProduto(produtos, correios);
+      ServiceCart serviceCart = services.getServiceCart(carrinho, correios);
+      PaginaProdutos paginaProdutos = services.getPageProdutos(serviceProduto);
+      ServicePedido servicePedido = services.getServicePedido(pedidos);
+      Account serviceLogin = getAccount(repositories, services, servicePedido);
 
       serviceProduto.seed();
 
@@ -51,7 +48,7 @@ public class ApplicationInjector implements AppInjector {
    }
 
    @Override
-   public IAccount getAccount(RepositoryInjector repositories, ServiceInjector services, IServicePedido servicePedido) {
+   public Account getAccount(RepositoryInjector repositories, ServiceInjector services, ServicePedido servicePedido) {
 
       RepositorioPessoa<PessoaFisica, CPF> repoPF = repositories.getRepositorioPF();
       RepositorioPessoa<PessoaJuridica, CNPJ> repoPJ = repositories.getRepositorioPJ();

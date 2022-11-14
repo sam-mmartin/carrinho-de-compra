@@ -4,11 +4,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
-import com.example.application.interfaces.IServiceFrete;
 import com.example.models.frete.Frete;
 import com.example.models.frete.interfaces.RepositorioFrete;
 
-public class ServiceFrete implements IServiceFrete {
+public class ServiceFrete {
 
    private final BigDecimal desconto;
    private final RepositorioFrete repositorio;
@@ -29,7 +28,6 @@ public class ServiceFrete implements IServiceFrete {
       return valor.setScale(2, RoundingMode.HALF_UP);
    }
 
-   @Override
    public void criarFreteParaProduto(String codigoProduto, boolean validador) {
       BigDecimal valor = new BigDecimal("0").setScale(2);
 

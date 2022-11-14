@@ -4,38 +4,32 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.application.interfaces.IServiceCart;
-import com.example.application.interfaces.IServiceFrete;
 import com.example.models.loja.ItemPedido;
 import com.example.models.loja.interfaces.Carrinho;
 
-public class ServiceCart implements IServiceCart {
+public class ServiceCart {
 
    private final Carrinho carrinho;
-   private final IServiceFrete correios;
+   private final ServiceFrete correios;
    private BigDecimal totalFrete;
 
-   public ServiceCart(Carrinho carrinho, IServiceFrete correios) {
+   public ServiceCart(Carrinho carrinho, ServiceFrete correios) {
       this.carrinho = carrinho;
       this.correios = correios;
    }
 
-   @Override
-   public void addItem(ItemPedido item) {
+   public void executa(ItemPedido item) {
       carrinho.adicionarItem(item);
    }
 
-   @Override
    public void removeItem(String uuid) {
       carrinho.removerItem(uuid);
    }
 
-   @Override
    public void updateItem(String uuid, int quantidade) {
       carrinho.alterarQuantidadeDeUmItem(uuid, quantidade);
    }
 
-   @Override
    public void viewAllItems() {
       carrinho.listarTodos().forEach((k, v) -> {
          BigDecimal frete = correios.calcularValorDoFrete(v.getProduto().getUuid(), v.getQuantidade());
@@ -48,7 +42,6 @@ public class ServiceCart implements IServiceCart {
       });
    }
 
-   @Override
    public List<ItemPedido> getAllItems() {
       List<ItemPedido> itens = new ArrayList<>();
 
@@ -57,17 +50,14 @@ public class ServiceCart implements IServiceCart {
       return itens;
    }
 
-   @Override
    public int getQuantityOfItems() {
       return carrinho.quantidadeDeItens();
    }
 
-   @Override
    public void removeAll() {
       carrinho.removerTudo();
    }
 
-   @Override
    public void calculateTotalShippingCost() {
       totalFrete = new BigDecimal("0.00");
 
@@ -77,7 +67,6 @@ public class ServiceCart implements IServiceCart {
       });
    }
 
-   @Override
    public BigDecimal totalPurchaseAmount() {
       calculateTotalShippingCost();
       return totalFrete.add(carrinho.getValorTotal());

@@ -5,26 +5,25 @@ import java.util.Scanner;
 
 import com.example.application.dto.pessoa.DTOCadastrarPF;
 import com.example.application.dto.pessoa.DTOCadastrarPJ;
-import com.example.application.interfaces.IAccount;
-import com.example.application.interfaces.IServicePedido;
 import com.example.application.interfaces.ServicePessoa;
+import com.example.application.services.ServicePedido;
 import com.example.models.loja.pedido.Pedido;
 import com.example.models.pessoa.Pessoa;
 import com.example.models.pessoa.PessoaFisica;
 import com.example.models.pessoa.PessoaJuridica;
 
-public class Account implements IAccount {
+public class Account {
 
    private ServicePessoa<PessoaFisica, DTOCadastrarPF> servicePF;
    private ServicePessoa<PessoaJuridica, DTOCadastrarPJ> servicePJ;
-   private IServicePedido servicePedido;
+   private ServicePedido servicePedido;
 
    private Scanner scanner = new Scanner(System.in);
    private String option;
 
    public Account(ServicePessoa<PessoaFisica, DTOCadastrarPF> servicePF,
          ServicePessoa<PessoaJuridica, DTOCadastrarPJ> servicePJ,
-         IServicePedido servicePedido) {
+         ServicePedido servicePedido) {
       this.servicePF = servicePF;
       this.servicePJ = servicePJ;
       this.servicePedido = servicePedido;
@@ -33,7 +32,6 @@ public class Account implements IAccount {
       servicePJ.seed();
    }
 
-   @Override
    public Pessoa userAccount(Pessoa user) {
       if (user != null) {
          do {
@@ -75,7 +73,6 @@ public class Account implements IAccount {
       return user;
    }
 
-   @Override
    public void viewUserInfos(Pessoa user) {
       List<Pedido> pedidos = servicePedido.getAll(user.getId());
 
@@ -92,7 +89,6 @@ public class Account implements IAccount {
       }
    }
 
-   @Override
    public void singIn(String id) {
       boolean cadastrou = false;
 
@@ -148,7 +144,6 @@ public class Account implements IAccount {
       }
    }
 
-   @Override
    public Pessoa logIn() {
       System.out.print("Informe seu CPF/CNPJ: ");
       this.option = scanner.nextLine();
@@ -166,7 +161,6 @@ public class Account implements IAccount {
       }
    }
 
-   @Override
    public <T> void singOut(T user, int tipo) {
       switch (tipo) {
          case 14:
@@ -182,13 +176,11 @@ public class Account implements IAccount {
       System.out.println("Sua conta foi apagada.");
    }
 
-   @Override
    public Pessoa logOut() {
       System.out.println("Você saiu!");
       return null;
    }
 
-   @Override
    public <T> void setUser(T user, int tipo) {
       switch (tipo) {
          case 14:
@@ -204,7 +196,6 @@ public class Account implements IAccount {
       }
    }
 
-   @Override
    public Pessoa getUser(int tipo) {
       switch (tipo) {
          case 14:

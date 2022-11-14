@@ -4,11 +4,6 @@ import java.math.BigDecimal;
 
 import com.example.application.dto.pessoa.DTOCadastrarPF;
 import com.example.application.dto.pessoa.DTOCadastrarPJ;
-import com.example.application.interfaces.IServiceCart;
-import com.example.application.interfaces.IServiceFrete;
-import com.example.application.interfaces.IServicePedido;
-import com.example.application.interfaces.IServiceProduto;
-import com.example.application.interfaces.Page;
 import com.example.application.interfaces.ServicePessoa;
 import com.example.application.interfaces.DI.ServiceInjector;
 import com.example.application.services.ServiceCart;
@@ -41,27 +36,27 @@ public class ServiceDependencyInjector implements ServiceInjector {
    }
 
    @Override
-   public IServiceProduto getServiceProduto(RepositorioProduto produtos, IServiceFrete correios) {
+   public ServiceProduto getServiceProduto(RepositorioProduto produtos, ServiceFrete correios) {
       return new ServiceProduto(produtos, correios);
    }
 
    @Override
-   public Page getPageProdutos(IServiceProduto serviceProduto) {
+   public PaginaProdutos getPageProdutos(ServiceProduto serviceProduto) {
       return new PaginaProdutos(serviceProduto);
    }
 
    @Override
-   public IServiceCart getServiceCart(Carrinho carrinho, IServiceFrete correios) {
+   public ServiceCart getServiceCart(Carrinho carrinho, ServiceFrete correios) {
       return new ServiceCart(carrinho, correios);
    }
 
    @Override
-   public IServiceFrete getIserviceFrete(RepositorioFrete correios, BigDecimal desconto) {
+   public ServiceFrete getIserviceFrete(RepositorioFrete correios, BigDecimal desconto) {
       return new ServiceFrete(correios, desconto);
    }
 
    @Override
-   public IServicePedido getServicePedido(RepositorioPedido pedidos) {
+   public ServicePedido getServicePedido(RepositorioPedido pedidos) {
       return new ServicePedido(pedidos);
    }
 

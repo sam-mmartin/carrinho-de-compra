@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 
 import com.example.application.dto.pessoa.DTOCadastrarPF;
 import com.example.application.dto.pessoa.DTOCadastrarPJ;
-import com.example.application.interfaces.IServiceCart;
-import com.example.application.interfaces.IServiceFrete;
-import com.example.application.interfaces.IServicePedido;
-import com.example.application.interfaces.IServiceProduto;
-import com.example.application.interfaces.Page;
 import com.example.application.interfaces.ServicePessoa;
+import com.example.application.resources.PaginaProdutos;
+import com.example.application.services.ServiceCart;
+import com.example.application.services.ServiceFrete;
+import com.example.application.services.ServicePedido;
+import com.example.application.services.ServiceProduto;
 import com.example.models.VOs.CNPJ;
 import com.example.models.VOs.CPF;
 import com.example.models.frete.interfaces.RepositorioFrete;
@@ -27,13 +27,13 @@ public interface ServiceInjector {
       public ServicePessoa<PessoaJuridica, DTOCadastrarPJ> getServicePJ(
                   RepositorioPessoa<PessoaJuridica, CNPJ> pessoas);
 
-      public IServiceProduto getServiceProduto(RepositorioProduto produtos, IServiceFrete correios);
+      public ServiceProduto getServiceProduto(RepositorioProduto produtos, ServiceFrete correios);
 
-      public Page getPageProdutos(IServiceProduto service);
+      public PaginaProdutos getPageProdutos(ServiceProduto service);
 
-      public IServiceCart getServiceCart(Carrinho carrinho, IServiceFrete correios);
+      public ServiceCart getServiceCart(Carrinho carrinho, ServiceFrete correios);
 
-      public IServiceFrete getIserviceFrete(RepositorioFrete correios, BigDecimal desconto);
+      public ServiceFrete getIserviceFrete(RepositorioFrete correios, BigDecimal desconto);
 
-      public IServicePedido getServicePedido(RepositorioPedido pedidos);
+      public ServicePedido getServicePedido(RepositorioPedido pedidos);
 }

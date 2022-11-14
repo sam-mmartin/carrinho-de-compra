@@ -8,17 +8,15 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.example.application.dto.produto.DTOCadastrarProduto;
-import com.example.application.interfaces.IServiceFrete;
-import com.example.application.interfaces.IServiceProduto;
 import com.example.models.produto.Produto;
 import com.example.models.produto.interfaces.RepositorioProduto;
 
-public class ServiceProduto implements IServiceProduto {
+public class ServiceProduto {
 
    private final RepositorioProduto repositorio;
-   private final IServiceFrete correios;
+   private final ServiceFrete correios;
 
-   public ServiceProduto(RepositorioProduto repositorio, IServiceFrete correios) {
+   public ServiceProduto(RepositorioProduto repositorio, ServiceFrete correios) {
       this.repositorio = repositorio;
       this.correios = correios;
    }
@@ -43,13 +41,11 @@ public class ServiceProduto implements IServiceProduto {
       return repositorio.buscarPorModelo(modelo);
    }
 
-   @Override
    public void executa(DTOCadastrarProduto objeto) {
       Produto novo = objeto.criaProduto();
       repositorio.cadastrar(novo);
    }
 
-   @Override
    public void seed() {
       JSONObject jsonObject;
       JSONParser parser = new JSONParser();

@@ -2,11 +2,10 @@ package com.example.application.services;
 
 import java.util.List;
 
-import com.example.application.interfaces.IServicePedido;
 import com.example.models.loja.interfaces.RepositorioPedido;
 import com.example.models.loja.pedido.Pedido;
 
-public class ServicePedido implements IServicePedido {
+public class ServicePedido {
 
    private final RepositorioPedido repositorio;
 
@@ -14,17 +13,14 @@ public class ServicePedido implements IServicePedido {
       this.repositorio = repositorio;
    }
 
-   @Override
-   public void addPedido(Pedido pedido) {
+   public void executa(Pedido pedido) {
       repositorio.cadastrar(pedido);
    }
 
-   @Override
    public List<Pedido> getAll(String idCliente) {
       return repositorio.listarTodos(idCliente);
    }
 
-   @Override
    public Pedido getPedido(String idCliente, String idPedido) {
       return repositorio.buscarPorId(idCliente, idPedido);
    }

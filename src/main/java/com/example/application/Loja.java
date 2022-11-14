@@ -4,33 +4,30 @@ import java.util.Random;
 import java.util.Scanner;
 
 import com.example.application.dto.pedido.ItemPedidoDTO;
-import com.example.application.interfaces.IAccount;
-import com.example.application.interfaces.ILoja;
-import com.example.application.interfaces.IServiceCart;
-import com.example.application.interfaces.IServicePedido;
-import com.example.application.interfaces.Page;
+import com.example.application.resources.PaginaProdutos;
+import com.example.application.services.ServiceCart;
+import com.example.application.services.ServicePedido;
 import com.example.models.loja.pedido.Pedido;
 import com.example.models.pessoa.Pessoa;
 
-public class Loja implements ILoja {
+public class Loja {
 
    private String option;
    private Scanner scanner = new Scanner(System.in);
    private Pessoa cliente;
 
-   private Page paginaProdutos;
-   private IServiceCart carrinho;
-   private IAccount serviceLogin;
-   private IServicePedido servicePedido;
+   private PaginaProdutos paginaProdutos;
+   private ServiceCart carrinho;
+   private Account serviceLogin;
+   private ServicePedido servicePedido;
 
-   public Loja(Page paginaProdutos, IServiceCart carrinho, IAccount serviceLogin, IServicePedido servicePedido) {
+   public Loja(PaginaProdutos paginaProdutos, ServiceCart carrinho, Account serviceLogin, ServicePedido servicePedido) {
       this.paginaProdutos = paginaProdutos;
       this.carrinho = carrinho;
       this.serviceLogin = serviceLogin;
       this.servicePedido = servicePedido;
    }
 
-   @Override
    public void run() {
 
       paginaProdutos.seed();
@@ -82,7 +79,6 @@ public class Loja implements ILoja {
       } while (!option.equals("exit"));
    }
 
-   @Override
    public void addProductToCart() {
       paginaProdutos.listarTodos();
 
@@ -95,10 +91,9 @@ public class Loja implements ILoja {
       int prodQuant = Integer.parseInt(this.option);
 
       ItemPedidoDTO item = paginaProdutos.selecionarProduto(prodOption, prodQuant);
-      carrinho.addItem(item.criarItemPedido());
+      carrinho.executa(item.criarItemPedido());
    }
 
-   @Override
    public void updateCartProduct() {
       if (yourCart()) {
          carrinho.getAllItems();
@@ -115,7 +110,6 @@ public class Loja implements ILoja {
       }
    }
 
-   @Override
    public void removeProductFromCart() {
       if (yourCart()) {
          carrinho.getAllItems();
@@ -127,7 +121,6 @@ public class Loja implements ILoja {
       }
    }
 
-   @Override
    public void viewCart() {
       if (yourCart()) {
          carrinho.viewAllItems();
@@ -136,7 +129,6 @@ public class Loja implements ILoja {
       }
    }
 
-   @Override
    public void closeOrder() {
       if (yourCart()) {
          boolean limparCarrinho = false;
@@ -183,7 +175,6 @@ public class Loja implements ILoja {
       }
    }
 
-   @Override
    public void menu() {
       System.out.printf("\033c");
       System.out.println("1 -  Comprar");
@@ -208,11 +199,10 @@ public class Loja implements ILoja {
       return true;
    }
 
-   @Override
    public void finalizePurchase() {
       int numeroPedido = new Random().nextInt();
       Pedido novo = new Pedido(String.valueOf(numeroPedido), cliente.getId(), carrinho.getAllItems());
-      servicePedido.addPedido(novo);
+      servicePedido.executa(novo);
 
       System.out.printf("\033c");
       System.out.println("Agradecemos a preferência! Acompanhe seu pedido: " + numeroPedido);
