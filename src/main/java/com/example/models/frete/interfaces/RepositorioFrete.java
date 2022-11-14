@@ -8,5 +8,5 @@ public interface RepositorioFrete {
 
    public Frete buscar(String codigoProduto);
 
-   public void update(Frete frete);
+   public void atualizar(Frete frete);
 }

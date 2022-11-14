@@ -25,7 +25,7 @@ public class RepositorioDeFrete implements RepositorioFrete {
    }
 
    @Override
-   public void update(Frete frete) {
+   public void atualizar(Frete frete) {
       fretes.removeIf(f -> f.getCodigoProduto().equals(frete.getCodigoProduto()));
       fretes.add(frete);
    }
