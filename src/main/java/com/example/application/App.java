@@ -8,7 +8,6 @@ import com.example.application.resources.Injector;
 
 public class App {
       public static void main(String[] args) {
-            System.out.println("Hello, World!");
 
             InjectorInterface injector = new Injector();
             AppInjector appInjector = new ApplicationInjector();

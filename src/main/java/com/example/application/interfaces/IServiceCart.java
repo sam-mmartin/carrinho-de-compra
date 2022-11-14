@@ -1,6 +1,7 @@
 package com.example.application.interfaces;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.example.models.loja.ItemPedido;
 
@@ -12,7 +13,9 @@ public interface IServiceCart {
 
    public void updateItem(String uuid, int quantidade);
 
-   public void getAllItems();
+   public void viewAllItems();
+
+   public List<ItemPedido> getAllItems();
 
    public int getQuantityOfItems();
 

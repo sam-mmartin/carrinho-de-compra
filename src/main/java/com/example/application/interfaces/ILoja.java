@@ -17,4 +17,6 @@ public interface ILoja {
    public void menu();
 
    public boolean yourCart();
+
+   public void finalizePurchase();
 }

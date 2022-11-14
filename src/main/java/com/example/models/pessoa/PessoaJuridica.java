@@ -15,6 +15,7 @@ public class PessoaJuridica extends Pessoa implements PessoaVO {
 
    public PessoaJuridica(CNPJ cnpj, String nomeFantasia, String razaoSocial, Email email, LocalDate dataCriacao) {
       this.cnpj = cnpj;
+      super.id = cnpj.getNumero();
       super.nome = nomeFantasia;
       this.razaoSocial = razaoSocial;
       super.email = email;

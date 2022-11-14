@@ -1,14 +1,16 @@
 package com.example.application.resources;
 
 import java.math.BigDecimal;
-import com.example.application.Login;
+
+import com.example.application.Account;
 import com.example.application.Loja;
 import com.example.application.dto.pessoa.DTOCadastrarPF;
 import com.example.application.dto.pessoa.DTOCadastrarPJ;
-import com.example.application.interfaces.ILogin;
+import com.example.application.interfaces.IAccount;
 import com.example.application.interfaces.ILoja;
 import com.example.application.interfaces.IServiceCart;
 import com.example.application.interfaces.IServiceFrete;
+import com.example.application.interfaces.IServicePedido;
 import com.example.application.interfaces.IServiceProduto;
 import com.example.application.interfaces.Page;
 import com.example.application.interfaces.ServicePessoa;
@@ -19,6 +21,7 @@ import com.example.models.VOs.CNPJ;
 import com.example.models.VOs.CPF;
 import com.example.models.frete.interfaces.RepositorioFrete;
 import com.example.models.loja.interfaces.Carrinho;
+import com.example.models.loja.interfaces.RepositorioPedido;
 import com.example.models.pessoa.PessoaFisica;
 import com.example.models.pessoa.PessoaJuridica;
 import com.example.models.pessoa.interfaces.RepositorioPessoa;
@@ -31,20 +34,24 @@ public class ApplicationInjector implements AppInjector {
 
       RepositorioProduto produtos = repositories.getRepositorioProduto();
       RepositorioFrete fretes = repositories.getRepositorioFrete();
-      Carrinho carrinho = repositories.getRepositorioPedido();
+      RepositorioPedido pedidos = repositories.getRepositorioPedido();
+      Carrinho carrinho = repositories.getCarrinho();
 
       IServiceFrete correios = services.getIserviceFrete(fretes, new BigDecimal("0.4"));
       IServiceProduto serviceProduto = services.getServiceProduto(produtos, correios);
       IServiceCart serviceCart = services.getServiceCart(carrinho, correios);
       Page paginaProdutos = services.getPageProdutos(serviceProduto);
-      ILogin serviceLogin = getLogin(repositories, services);
+      IServicePedido servicePedido = services.getServicePedido(pedidos);
+      IAccount serviceLogin = getAccount(repositories, services, servicePedido);
 
-      return new Loja(serviceProduto, paginaProdutos, serviceCart, serviceLogin);
+      serviceProduto.seed();
+
+      return new Loja(paginaProdutos, serviceCart, serviceLogin, servicePedido);
 
    }
 
    @Override
-   public ILogin getLogin(RepositoryInjector repositories, ServiceInjector services) {
+   public IAccount getAccount(RepositoryInjector repositories, ServiceInjector services, IServicePedido servicePedido) {
 
       RepositorioPessoa<PessoaFisica, CPF> repoPF = repositories.getRepositorioPF();
       RepositorioPessoa<PessoaJuridica, CNPJ> repoPJ = repositories.getRepositorioPJ();
@@ -52,7 +59,7 @@ public class ApplicationInjector implements AppInjector {
       ServicePessoa<PessoaFisica, DTOCadastrarPF> servicePF = services.getServicePF(repoPF);
       ServicePessoa<PessoaJuridica, DTOCadastrarPJ> servicePJ = services.getServicePJ(repoPJ);
 
-      return new Login(servicePF, servicePJ);
+      return new Account(servicePF, servicePJ, servicePedido);
    }
 
 }

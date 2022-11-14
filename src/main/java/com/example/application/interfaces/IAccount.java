@@ -2,9 +2,11 @@ package com.example.application.interfaces;
 
 import com.example.models.pessoa.Pessoa;
 
-public interface ILogin {
+public interface IAccount {
 
-   public void userAccount(Pessoa user);
+   public Pessoa userAccount(Pessoa user);
+
+   public void viewUserInfos(Pessoa user);
 
    public void singIn(String id);
 
@@ -12,7 +14,7 @@ public interface ILogin {
 
    public Pessoa logIn();
 
-   public void logOut(Pessoa user);
+   public Pessoa logOut();
 
    public <T> void setUser(T user, int tipo);
 

@@ -1,35 +1,95 @@
 package com.example.application;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.example.application.dto.pessoa.DTOCadastrarPF;
 import com.example.application.dto.pessoa.DTOCadastrarPJ;
-import com.example.application.interfaces.ILogin;
+import com.example.application.interfaces.IAccount;
+import com.example.application.interfaces.IServicePedido;
 import com.example.application.interfaces.ServicePessoa;
+import com.example.models.loja.pedido.Pedido;
 import com.example.models.pessoa.Pessoa;
 import com.example.models.pessoa.PessoaFisica;
 import com.example.models.pessoa.PessoaJuridica;
 
-public class Login implements ILogin {
+public class Account implements IAccount {
 
    private ServicePessoa<PessoaFisica, DTOCadastrarPF> servicePF;
    private ServicePessoa<PessoaJuridica, DTOCadastrarPJ> servicePJ;
+   private IServicePedido servicePedido;
 
    private Scanner scanner = new Scanner(System.in);
    private String option;
 
-   public Login(ServicePessoa<PessoaFisica, DTOCadastrarPF> servicePF,
-         ServicePessoa<PessoaJuridica, DTOCadastrarPJ> servicePJ) {
+   public Account(ServicePessoa<PessoaFisica, DTOCadastrarPF> servicePF,
+         ServicePessoa<PessoaJuridica, DTOCadastrarPJ> servicePJ,
+         IServicePedido servicePedido) {
       this.servicePF = servicePF;
       this.servicePJ = servicePJ;
+      this.servicePedido = servicePedido;
 
       servicePF.seed();
       servicePJ.seed();
    }
 
    @Override
-   public void userAccount(Pessoa user) {
+   public Pessoa userAccount(Pessoa user) {
+      if (user != null) {
+         do {
+            menu();
+            option = scanner.nextLine();
+            System.out.printf("\033c");
+
+            switch (option) {
+               case "1":
+                  viewUserInfos(user);
+                  break;
+
+               case "2":
+                  user = logOut();
+                  break;
+
+               case "3":
+                  singOut(user, user.getId().length());
+                  user = logOut();
+                  option = "exit";
+                  break;
+
+               case "0":
+                  option = "exit";
+                  break;
+
+               default:
+                  System.out.println("Opção inválida.");
+                  break;
+            }
+
+            scanner.nextLine();
+            System.out.printf("\033c");
+         } while (!option.equals("exit"));
+      } else {
+         System.out.println("Realize login para acessar sua conta.");
+      }
+
+      return user;
+   }
+
+   @Override
+   public void viewUserInfos(Pessoa user) {
+      List<Pedido> pedidos = servicePedido.getAll(user.getId());
+
+      System.out.printf("\033c");
       System.out.println(user);
+      System.out.println("PEDIDOS");
+
+      if (pedidos != null) {
+         pedidos.forEach(p -> {
+            System.out.println("Pedido: " + p.getIdPedido());
+            p.getItens().forEach(i -> System.out.println(i));
+            System.out.println("=====================================================================");
+         });
+      }
    }
 
    @Override
@@ -95,13 +155,37 @@ public class Login implements ILogin {
 
       try {
          Pessoa user = getUser(this.option.length());
-         System.out.println("Você entrou. Boas Compras.");
+         if (user != null) {
+            System.out.println("Você entrou. Boas Compras.");
+         }
          return user;
       } catch (RuntimeException e) {
          System.out.println(e.getMessage());
          singIn(this.option);
          return null;
       }
+   }
+
+   @Override
+   public <T> void singOut(T user, int tipo) {
+      switch (tipo) {
+         case 14:
+            servicePF.remove((PessoaFisica) user);
+            break;
+         case 18:
+            servicePJ.remove((PessoaJuridica) user);
+            break;
+         default:
+            break;
+      }
+
+      System.out.println("Sua conta foi apagada.");
+   }
+
+   @Override
+   public Pessoa logOut() {
+      System.out.println("Você saiu!");
+      return null;
    }
 
    @Override
@@ -132,23 +216,10 @@ public class Login implements ILogin {
       }
    }
 
-   @Override
-   public <T> void singOut(T user, int tipo) {
-      switch (tipo) {
-         case 14:
-            servicePF.remove((PessoaFisica) user);
-            break;
-         case 18:
-            servicePJ.remove((PessoaJuridica) user);
-            break;
-         default:
-            break;
-      }
+   public void menu() {
+      System.out.println("1 - Dados da conta");
+      System.out.println("2 - Sair");
+      System.out.println("3 - Apagar minha conta");
+      System.out.println("0 - Voltar");
    }
-
-   @Override
-   public void logOut(Pessoa user) {
-      user = null;
-   }
-
 }

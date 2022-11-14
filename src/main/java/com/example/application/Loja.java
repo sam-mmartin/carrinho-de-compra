@@ -4,11 +4,12 @@ import java.util.Random;
 import java.util.Scanner;
 
 import com.example.application.dto.pedido.ItemPedidoDTO;
-import com.example.application.interfaces.ILogin;
+import com.example.application.interfaces.IAccount;
 import com.example.application.interfaces.ILoja;
 import com.example.application.interfaces.IServiceCart;
-import com.example.application.interfaces.IServiceProduto;
+import com.example.application.interfaces.IServicePedido;
 import com.example.application.interfaces.Page;
+import com.example.models.loja.pedido.Pedido;
 import com.example.models.pessoa.Pessoa;
 
 public class Loja implements ILoja {
@@ -17,22 +18,21 @@ public class Loja implements ILoja {
    private Scanner scanner = new Scanner(System.in);
    private Pessoa cliente;
 
-   private IServiceProduto produtos;
    private Page paginaProdutos;
    private IServiceCart carrinho;
-   private ILogin serviceLogin;
+   private IAccount serviceLogin;
+   private IServicePedido servicePedido;
 
-   public Loja(IServiceProduto produtos, Page paginaProdutos, IServiceCart carrinho, ILogin serviceLogin) {
-      this.produtos = produtos;
+   public Loja(Page paginaProdutos, IServiceCart carrinho, IAccount serviceLogin, IServicePedido servicePedido) {
       this.paginaProdutos = paginaProdutos;
       this.carrinho = carrinho;
       this.serviceLogin = serviceLogin;
+      this.servicePedido = servicePedido;
    }
 
    @Override
    public void run() {
 
-      produtos.seed();
       paginaProdutos.seed();
 
       do {
@@ -66,8 +66,10 @@ public class Loja implements ILoja {
                closeOrder();
                break;
             case "9":
-               serviceLogin.userAccount(cliente);
+               this.cliente = serviceLogin.userAccount(cliente);
                break;
+            case "10":
+               this.cliente = serviceLogin.logOut();
             case "0":
                option = "exit";
                break;
@@ -128,7 +130,7 @@ public class Loja implements ILoja {
    @Override
    public void viewCart() {
       if (yourCart()) {
-         carrinho.getAllItems();
+         carrinho.viewAllItems();
          System.out.println("======================================================================");
          System.out.println("Total: R$" + carrinho.totalPurchaseAmount());
       }
@@ -139,13 +141,14 @@ public class Loja implements ILoja {
       if (yourCart()) {
          boolean limparCarrinho = false;
 
-         if (cliente == null) {
-            serviceLogin.logIn();
+         while (this.cliente == null) {
+            System.out.printf("\033c");
+            this.cliente = serviceLogin.logIn();
          }
 
          System.out.printf("\033c");
          System.out.println(cliente);
-         carrinho.getAllItems();
+         carrinho.viewAllItems();
 
          System.out.println("======================================================================");
          System.out.println("Valor total: " + carrinho.totalPurchaseAmount());
@@ -162,9 +165,7 @@ public class Loja implements ILoja {
 
                if (option.equals("Y") || option.equals("y")) {
                   limparCarrinho = true;
-                  int numeroPedido = new Random().nextInt();
-                  System.out.printf("\033c");
-                  System.out.println("Agradecemos a preferência! Acompanhe seu pedido: " + numeroPedido);
+                  finalizePurchase();
                }
                break;
             case "2":
@@ -185,16 +186,17 @@ public class Loja implements ILoja {
    @Override
    public void menu() {
       System.out.printf("\033c");
-      System.out.println("1 - Comprar");
-      System.out.println("2 - Alterar quantidade de um produto");
-      System.out.println("3 - Remover produto do carrinho");
-      System.out.println("4 - Carrinho");
-      System.out.println("5 - Limpar carrinho");
-      System.out.println("6 - Fazer Login");
-      System.out.println("7 - Cadastre-se");
-      System.out.println("8 - Fechar pedido");
-      System.out.println("9 - Minha conta");
-      System.out.println("0 - Sair");
+      System.out.println("1 -  Comprar");
+      System.out.println("2 -  Alterar quantidade de um produto");
+      System.out.println("3 -  Remover produto do carrinho");
+      System.out.println("4 -  Carrinho");
+      System.out.println("5 -  Limpar carrinho");
+      System.out.println("6 -  Fazer Login");
+      System.out.println("7 -  Cadastre-se");
+      System.out.println("8 -  Fechar pedido");
+      System.out.println("9 -  Minha conta");
+      System.out.println("10 - Sair");
+      System.out.println("0 - Fechar");
    }
 
    public boolean yourCart() {
@@ -204,5 +206,15 @@ public class Loja implements ILoja {
       }
 
       return true;
+   }
+
+   @Override
+   public void finalizePurchase() {
+      int numeroPedido = new Random().nextInt();
+      Pedido novo = new Pedido(String.valueOf(numeroPedido), cliente.getId(), carrinho.getAllItems());
+      servicePedido.addPedido(novo);
+
+      System.out.printf("\033c");
+      System.out.println("Agradecemos a preferência! Acompanhe seu pedido: " + numeroPedido);
    }
 }

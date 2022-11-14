@@ -4,12 +4,14 @@ import com.example.application.interfaces.DI.RepositoryInjector;
 import com.example.infrastructure.RepositorioDeFrete;
 import com.example.infrastructure.RepositorioDePF;
 import com.example.infrastructure.RepositorioDePJ;
+import com.example.infrastructure.RepositorioDePedido;
 import com.example.infrastructure.RepositorioDeProduto;
 import com.example.infrastructure.cart.Cart;
 import com.example.models.VOs.CNPJ;
 import com.example.models.VOs.CPF;
 import com.example.models.frete.interfaces.RepositorioFrete;
 import com.example.models.loja.interfaces.Carrinho;
+import com.example.models.loja.interfaces.RepositorioPedido;
 import com.example.models.pessoa.PessoaFisica;
 import com.example.models.pessoa.PessoaJuridica;
 import com.example.models.pessoa.interfaces.RepositorioPessoa;
@@ -38,7 +40,12 @@ public class RepositoryDependencyInjector implements RepositoryInjector {
    }
 
    @Override
-   public Carrinho getRepositorioPedido() {
+   public RepositorioPedido getRepositorioPedido() {
+      return new RepositorioDePedido();
+   }
+
+   @Override
+   public Carrinho getCarrinho() {
       return new Cart();
    }
 

@@ -11,6 +11,7 @@ public class PessoaFisica extends Pessoa implements PessoaVO {
 
    public PessoaFisica(CPF cpf, String nome, Email email) {
       this.cpf = cpf;
+      super.id = cpf.getNumero();
       super.nome = nome;
       super.email = email;
    }

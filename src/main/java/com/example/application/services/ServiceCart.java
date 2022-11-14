@@ -1,6 +1,8 @@
 package com.example.application.services;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.application.interfaces.IServiceCart;
 import com.example.application.interfaces.IServiceFrete;
@@ -18,19 +20,23 @@ public class ServiceCart implements IServiceCart {
       this.correios = correios;
    }
 
+   @Override
    public void addItem(ItemPedido item) {
       carrinho.adicionarItem(item);
    }
 
+   @Override
    public void removeItem(String uuid) {
       carrinho.removerItem(uuid);
    }
 
+   @Override
    public void updateItem(String uuid, int quantidade) {
       carrinho.alterarQuantidadeDeUmItem(uuid, quantidade);
    }
 
-   public void getAllItems() {
+   @Override
+   public void viewAllItems() {
       carrinho.listarTodos().forEach((k, v) -> {
          BigDecimal frete = correios.calcularValorDoFrete(v.getProduto().getUuid(), v.getQuantidade());
          System.out.println(k + ": " + v);
@@ -40,6 +46,15 @@ public class ServiceCart implements IServiceCart {
             System.out.println("Frete: R$" + frete);
          }
       });
+   }
+
+   @Override
+   public List<ItemPedido> getAllItems() {
+      List<ItemPedido> itens = new ArrayList<>();
+
+      carrinho.listarTodos().values().forEach(v -> itens.add(v));
+
+      return itens;
    }
 
    @Override
