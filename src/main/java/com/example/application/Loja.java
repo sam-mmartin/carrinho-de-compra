@@ -13,7 +13,8 @@ import com.example.models.loja.pedido.Pedido;
 public class Loja {
 
    private String option;
-   private Scanner scanner = new Scanner(System.in);
+   private String select;
+   private Scanner scanner;
 
    private PaginaProdutos paginaProdutos;
    private ServiceCart carrinho;
@@ -34,13 +35,14 @@ public class Loja {
    public void run() {
 
       paginaProdutos.seed();
+      scanner = new Scanner(System.in);
 
       do {
          menu();
-         option = scanner.nextLine();
+         select = scanner.nextLine();
          System.out.printf("\033c");
 
-         switch (option) {
+         switch (select) {
             case "1":
                addProductToCart();
                break;
@@ -105,7 +107,7 @@ public class Loja {
                   accountPJ.logOut();
                }
             case "0":
-               option = "exit";
+               select = "exit";
                break;
             default:
                System.out.println("Opção inválida.");
@@ -113,7 +115,9 @@ public class Loja {
          }
 
          scanner.nextLine();
-      } while (!option.equals("exit"));
+      } while (!select.equals("exit"));
+
+      scanner.close();
    }
 
    private void startAccountService() {

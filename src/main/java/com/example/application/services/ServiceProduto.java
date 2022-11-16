@@ -55,9 +55,7 @@ public class ServiceProduto {
 
       try {
          Path jsonFile = Paths.get("src/products.json");
-
          jsonObject = (JSONObject) parser.parse(new FileReader(jsonFile.toAbsolutePath().toString()));
-
          JSONArray jsonArray = (JSONArray) jsonObject.get("items");
 
          for (int i = 0; i < jsonArray.size(); i++) {

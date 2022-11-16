@@ -16,7 +16,7 @@ public class AccountPF implements Account {
    private ServicePedido servicePedido;
    private PessoaFisica user;
 
-   private Scanner scanner = new Scanner(System.in);
+   private Scanner scanner;
    private String option;
 
    public AccountPF(ServicePessoa<PessoaFisica, DTOCadastrarPF> servicePF,
@@ -40,7 +40,10 @@ public class AccountPF implements Account {
 
    public void userAccount() {
       if (user != null) {
+         scanner = new Scanner(System.in);
+
          do {
+            System.out.printf("\033c");
             menu();
             option = scanner.nextLine();
             System.out.printf("\033c");
@@ -70,7 +73,7 @@ public class AccountPF implements Account {
             }
 
             scanner.nextLine();
-            System.out.printf("\033c");
+
          } while (!option.equals("exit"));
       } else {
          System.out.println("Realize login para acessar sua conta.");
