@@ -54,8 +54,8 @@ public class ServiceProduto {
       String taxa, id, name, price, category, subcategory;
 
       try {
-         Path jsonFile = Paths.get("src/products.json");
-         jsonObject = (JSONObject) parser.parse(new FileReader(jsonFile.toAbsolutePath().toString()));
+         String jsonFile = Paths.get("src/products.json").toAbsolutePath().toString();
+         jsonObject = (JSONObject) parser.parse(new FileReader(jsonFile));
          JSONArray jsonArray = (JSONArray) jsonObject.get("items");
 
          for (int i = 0; i < jsonArray.size(); i++) {
