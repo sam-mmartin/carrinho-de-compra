@@ -32,6 +32,6 @@ public class RepositorioDePF implements RepositorioPessoa<PessoaFisica, CPF> {
 
    @Override
    public void remover(PessoaFisica pessoa) {
-      this.pessoas.removeIf(p -> p.getId().equals(pessoa.getId()));
+      this.pessoas.removeIf(p -> p.getCpf().getNumero().equals(pessoa.getCpf().getNumero()));
    }
 }

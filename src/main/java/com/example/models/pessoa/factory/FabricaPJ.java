@@ -5,9 +5,9 @@ import java.time.LocalDate;
 import com.example.models.VOs.CNPJ;
 import com.example.models.VOs.Email;
 import com.example.models.pessoa.PessoaJuridica;
-import com.example.models.pessoa.interfaces.generics.FabricaPessoa;
+import com.example.models.pessoa.interfaces.FabricaPessoaJuridica;
 
-public class FabricaPJ implements FabricaPessoa<PessoaJuridica> {
+public class FabricaPJ implements FabricaPessoaJuridica {
 
    private PessoaJuridica pessoaJuridica;
 

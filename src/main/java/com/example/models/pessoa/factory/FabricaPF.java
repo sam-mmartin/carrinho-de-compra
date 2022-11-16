@@ -3,9 +3,9 @@ package com.example.models.pessoa.factory;
 import com.example.models.VOs.CPF;
 import com.example.models.VOs.Email;
 import com.example.models.pessoa.PessoaFisica;
-import com.example.models.pessoa.interfaces.generics.FabricaPessoa;
+import com.example.models.pessoa.interfaces.FabricaPessoaFisica;
 
-public class FabricaPF implements FabricaPessoa<PessoaFisica> {
+public class FabricaPF implements FabricaPessoaFisica {
 
    private PessoaFisica pessoaFisica;
 
@@ -19,7 +19,6 @@ public class FabricaPF implements FabricaPessoa<PessoaFisica> {
       return this;
    }
 
-   @Override
    public PessoaFisica criar() {
       return this.pessoaFisica;
    }

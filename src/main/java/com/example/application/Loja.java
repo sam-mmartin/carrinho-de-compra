@@ -4,28 +4,31 @@ import java.util.Random;
 import java.util.Scanner;
 
 import com.example.application.dto.pedido.ItemPedidoDTO;
+import com.example.application.interfaces.DI.AccountInjector;
 import com.example.application.resources.PaginaProdutos;
 import com.example.application.services.ServiceCart;
 import com.example.application.services.ServicePedido;
 import com.example.models.loja.pedido.Pedido;
-import com.example.models.pessoa.Pessoa;
 
 public class Loja {
 
    private String option;
    private Scanner scanner = new Scanner(System.in);
-   private Pessoa cliente;
 
    private PaginaProdutos paginaProdutos;
    private ServiceCart carrinho;
-   private Account serviceLogin;
    private ServicePedido servicePedido;
+   private AccountInjector accountInjector;
+   private AccountPF accountPF;
+   private AccountPJ accountPJ;
+   private boolean isPessoaFisica;
 
-   public Loja(PaginaProdutos paginaProdutos, ServiceCart carrinho, Account serviceLogin, ServicePedido servicePedido) {
+   public Loja(PaginaProdutos paginaProdutos, ServiceCart carrinho, ServicePedido servicePedido,
+         AccountInjector accountInjector) {
       this.paginaProdutos = paginaProdutos;
       this.carrinho = carrinho;
-      this.serviceLogin = serviceLogin;
       this.servicePedido = servicePedido;
+      this.accountInjector = accountInjector;
    }
 
    public void run() {
@@ -54,19 +57,19 @@ public class Loja {
                carrinho.removeAll();
                break;
             case "6":
-               this.cliente = serviceLogin.logIn();
+               login();
                break;
             case "7":
-               serviceLogin.singIn(null);
+               // account.singIn(null);
                break;
             case "8":
                closeOrder();
                break;
             case "9":
-               this.cliente = serviceLogin.userAccount(cliente);
+               // account.userAccount();
                break;
             case "10":
-               this.cliente = serviceLogin.logOut();
+               // account.logOut();
             case "0":
                option = "exit";
                break;
@@ -77,6 +80,27 @@ public class Loja {
 
          scanner.nextLine();
       } while (!option.equals("exit"));
+   }
+
+   private void login() {
+      System.out.print("Informe seu CPF/CNPJ: ");
+      option = scanner.nextLine();
+
+      switch (option.length()) {
+         case 14:
+            accountPF = accountInjector.getAccountPF(servicePedido);
+            accountPF.logIn(option);
+            isPessoaFisica = true;
+            break;
+
+         case 18:
+            accountPJ = accountInjector.getAccountPJ(servicePedido);
+            accountPJ.logIn(option);
+            isPessoaFisica = false;
+            break;
+         default:
+            break;
+      }
    }
 
    public void addProductToCart() {
@@ -133,13 +157,17 @@ public class Loja {
       if (yourCart()) {
          boolean limparCarrinho = false;
 
-         while (this.cliente == null) {
-            System.out.printf("\033c");
-            this.cliente = serviceLogin.logIn();
-         }
+         setAccount();
 
          System.out.printf("\033c");
-         System.out.println(cliente);
+
+         if (isPessoaFisica) {
+            System.out.println(accountPF.getUser());
+         } else {
+            System.out.println(accountPJ.getUser());
+         }
+
+         System.out.println();
          carrinho.viewAllItems();
 
          System.out.println("======================================================================");
@@ -175,6 +203,25 @@ public class Loja {
       }
    }
 
+   public void setAccount() {
+      if (accountPF == null && accountPJ == null) {
+         System.out.printf("\033c");
+         login();
+
+         if (isPessoaFisica) {
+            while (accountPF.getUser() == null) {
+               System.out.printf("\033c");
+               accountPF.logIn(null);
+            }
+         } else {
+            while (accountPJ.getUser() == null) {
+               System.out.printf("\033c");
+               accountPJ.logIn(null);
+            }
+         }
+      }
+   }
+
    public void menu() {
       System.out.printf("\033c");
       System.out.println("1 -  Comprar");
@@ -201,10 +248,20 @@ public class Loja {
 
    public void finalizePurchase() {
       int numeroPedido = new Random().nextInt();
-      Pedido novo = new Pedido(String.valueOf(numeroPedido), cliente.getId(), carrinho.getAllItems());
+      Pedido novo;
+
+      if (isPessoaFisica) {
+         novo = new Pedido(String.valueOf(numeroPedido),
+               accountPF.getUser().getCpf().getNumero(), carrinho.getAllItems());
+      } else {
+         novo = new Pedido(String.valueOf(numeroPedido),
+               accountPJ.getUser().getCnpj(), carrinho.getAllItems());
+      }
+
       servicePedido.executa(novo);
 
       System.out.printf("\033c");
-      System.out.println("Agradecemos a preferência! Acompanhe seu pedido: " + numeroPedido);
+      System.out.println("Agradecemos a preferência! Acompanhe seu pedido: " +
+            numeroPedido);
    }
 }
