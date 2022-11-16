@@ -57,19 +57,53 @@ public class Loja {
                carrinho.removeAll();
                break;
             case "6":
-               login();
+               startAccountService();
+
+               if (isPessoaFisica) {
+                  accountPF.logIn(option);
+               } else {
+                  accountPJ.logIn(option);
+               }
                break;
             case "7":
-               // account.singIn(null);
+               startAccountService();
+
+               if (isPessoaFisica) {
+                  accountPF.singIn(option);
+               } else {
+                  accountPJ.singIn(option);
+               }
                break;
             case "8":
                closeOrder();
                break;
             case "9":
-               // account.userAccount();
+               checkIfAccountServiceStarted();
+
+               if (accountPF != null && isPessoaFisica) {
+                  if (accountPF.getUser() == null) {
+                     accountPF.logIn(option);
+                  }
+
+                  accountPF.userAccount();
+               }
+
+               if (accountPJ != null && !isPessoaFisica) {
+                  if (accountPJ.getUser() == null) {
+                     accountPJ.logIn(option);
+                  }
+
+                  accountPJ.userAccount();
+               }
                break;
             case "10":
-               // account.logOut();
+               checkIfAccountServiceStarted();
+
+               if (isPessoaFisica) {
+                  accountPF.logOut();
+               } else {
+                  accountPJ.logOut();
+               }
             case "0":
                option = "exit";
                break;
@@ -82,24 +116,34 @@ public class Loja {
       } while (!option.equals("exit"));
    }
 
-   private void login() {
+   private void startAccountService() {
       System.out.print("Informe seu CPF/CNPJ: ");
       option = scanner.nextLine();
 
       switch (option.length()) {
          case 14:
-            accountPF = accountInjector.getAccountPF(servicePedido);
-            accountPF.logIn(option);
+            if (accountPF == null) {
+               accountPF = accountInjector.getAccountPF(servicePedido);
+            }
+
             isPessoaFisica = true;
             break;
 
          case 18:
-            accountPJ = accountInjector.getAccountPJ(servicePedido);
-            accountPJ.logIn(option);
+            if (accountPJ == null) {
+               accountPJ = accountInjector.getAccountPJ(servicePedido);
+            }
+
             isPessoaFisica = false;
             break;
          default:
             break;
+      }
+   }
+
+   private void checkIfAccountServiceStarted() {
+      if (accountPF == null && accountPJ == null) {
+         startAccountService();
       }
    }
 
@@ -206,7 +250,7 @@ public class Loja {
    public void setAccount() {
       if (accountPF == null && accountPJ == null) {
          System.out.printf("\033c");
-         login();
+         startAccountService();
 
          if (isPessoaFisica) {
             while (accountPF.getUser() == null) {
