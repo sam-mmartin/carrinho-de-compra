@@ -1,6 +1,8 @@
 package com.example.application.services;
 
 import java.io.FileReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -52,8 +54,9 @@ public class ServiceProduto {
       String taxa, id, name, price, category, subcategory;
 
       try {
-         jsonObject = (JSONObject) parser.parse(new FileReader(
-               "src/products.json"));
+         Path jsonFile = Paths.get("src/products.json");
+
+         jsonObject = (JSONObject) parser.parse(new FileReader(jsonFile.toAbsolutePath().toString()));
 
          JSONArray jsonArray = (JSONArray) jsonObject.get("items");
 
