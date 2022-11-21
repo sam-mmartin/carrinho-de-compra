@@ -120,7 +120,7 @@ public class Loja {
       scanner.close();
    }
 
-   private void startAccountService() {
+   public String startAccountService() {
       System.out.print("Informe seu CPF/CNPJ: ");
       option = scanner.nextLine();
 
@@ -143,6 +143,8 @@ public class Loja {
          default:
             break;
       }
+
+      return option;
    }
 
    private void checkIfAccountServiceStarted() {
@@ -254,17 +256,17 @@ public class Loja {
    public void setAccount() {
       if (accountPF == null && accountPJ == null) {
          System.out.printf("\033c");
-         startAccountService();
+         String id = startAccountService();
 
          if (isPessoaFisica) {
             while (accountPF.getUser() == null) {
                System.out.printf("\033c");
-               accountPF.logIn(null);
+               accountPF.logIn(id);
             }
          } else {
             while (accountPJ.getUser() == null) {
                System.out.printf("\033c");
-               accountPJ.logIn(null);
+               accountPJ.logIn(id);
             }
          }
       }

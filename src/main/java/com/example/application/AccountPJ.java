@@ -16,7 +16,7 @@ public class AccountPJ implements Account {
    private ServicePedido servicePedido;
    private PessoaJuridica user;
 
-   private Scanner scanner = new Scanner(System.in);
+   private Scanner scanner;
    private String option;
 
    public AccountPJ(ServicePessoa<PessoaJuridica, DTOCadastrarPJ> servicePJ,
@@ -31,16 +31,20 @@ public class AccountPJ implements Account {
       return user;
    }
 
-   public void menu() {
+   private void menu() {
       System.out.println("1 - Dados da conta");
       System.out.println("2 - Sair");
       System.out.println("3 - Apagar minha conta");
       System.out.println("0 - Voltar");
    }
 
+   @Override
    public void userAccount() {
       if (user != null) {
+         scanner = new Scanner(System.in);
+
          do {
+            System.out.printf("\033c");
             menu();
             option = scanner.nextLine();
             System.out.printf("\033c");
@@ -70,13 +74,14 @@ public class AccountPJ implements Account {
             }
 
             scanner.nextLine();
-            System.out.printf("\033c");
+
          } while (!option.equals("exit"));
       } else {
          System.out.println("Realize login para acessar sua conta.");
       }
    }
 
+   @Override
    public void viewUserInfos() {
       List<Pedido> pedidos = servicePedido.getAll(user.getCnpj());
 
@@ -93,6 +98,7 @@ public class AccountPJ implements Account {
       }
    }
 
+   @Override
    public void singIn(String id) {
       boolean cadastrou = false;
 
@@ -131,6 +137,7 @@ public class AccountPJ implements Account {
       }
    }
 
+   @Override
    public void logIn(String id) {
       try {
          if (id == null) {
@@ -149,11 +156,13 @@ public class AccountPJ implements Account {
       }
    }
 
+   @Override
    public void singOut() {
       servicePJ.remove(user);
       System.out.println("Sua conta foi apagada.");
    }
 
+   @Override
    public void logOut() {
       System.out.println("Você saiu!");
       user = null;

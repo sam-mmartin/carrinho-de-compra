@@ -1,6 +1,7 @@
 package com.example.application.services;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class ServiceCart {
    private final Carrinho carrinho;
    private final ServiceFrete correios;
    private BigDecimal totalFrete;
+   private int itemsQuantity;
 
    public ServiceCart(Carrinho carrinho, ServiceFrete correios) {
       this.carrinho = carrinho;
@@ -68,8 +70,25 @@ public class ServiceCart {
    }
 
    public BigDecimal totalPurchaseAmount() {
+      itemsQuantity = 0;
+
+      carrinho.listarTodos().forEach((k, v) -> {
+         itemsQuantity += v.getQuantidade();
+      });
+
+      ServiceDiscount serviceDiscount = new ServiceDiscount();
+
       calculateTotalShippingCost();
-      return totalFrete.add(carrinho.getValorTotal());
+      BigDecimal total = totalFrete.add(carrinho.getValorTotal());
+      BigDecimal totalComDesconto = serviceDiscount.realizarAplicacaoDesconto(total, itemsQuantity);
+      mostrarDesconto(total, totalComDesconto);
+
+      return totalComDesconto;
+   }
+
+   public void mostrarDesconto(BigDecimal totalFinal, BigDecimal totalComDesconto) {
+      BigDecimal desconto = totalFinal.subtract(totalComDesconto).setScale(2, RoundingMode.HALF_UP);
+      System.out.println("Desconto aplicado: " + desconto);
    }
 
 }

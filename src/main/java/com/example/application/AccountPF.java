@@ -31,13 +31,14 @@ public class AccountPF implements Account {
       return user;
    }
 
-   public void menu() {
+   private void menu() {
       System.out.println("1 - Dados da conta");
       System.out.println("2 - Sair");
       System.out.println("3 - Apagar minha conta");
       System.out.println("0 - Voltar");
    }
 
+   @Override
    public void userAccount() {
       if (user != null) {
          scanner = new Scanner(System.in);
@@ -80,6 +81,7 @@ public class AccountPF implements Account {
       }
    }
 
+   @Override
    public void viewUserInfos() {
       List<Pedido> pedidos = servicePedido.getAll(user.getCpf().getNumero());
 
@@ -96,6 +98,7 @@ public class AccountPF implements Account {
       }
    }
 
+   @Override
    public void singIn(String id) {
       boolean cadastrou = false;
 
@@ -128,6 +131,7 @@ public class AccountPF implements Account {
       }
    }
 
+   @Override
    public void logIn(String id) {
       try {
          if (id == null) {
@@ -146,11 +150,13 @@ public class AccountPF implements Account {
       }
    }
 
+   @Override
    public void singOut() {
       servicePF.remove(user);
       System.out.println("Sua conta foi apagada.");
    }
 
+   @Override
    public void logOut() {
       System.out.println("Você saiu!");
       user = null;
